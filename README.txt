@@ -1,4 +1,4 @@
-<h2>BAS - BRAMS Automation Suite</h2>
+BAS - BRAMS Automation Suite
 
 Os modelos numéricos regionais são usados como ferramentas na geração de previsões de tempo e que trazem uma maior precisão se comparado aos modelos globais, já que são utilizados em regiões limitadas. Atualmente o CPTEC/INPE (Centro de Previsão de Tempo e Estudos Climáticos do Instituto Nacional de Pesquisas Espaciais) é o órgão responsável pelo desenvolvimento contínuo do BRAMS (Brazilian Regional Atmospheric Modelling System), um modelo regional preparado para ser aplicado às condições tropicais. Mesmo sendo um modelo continuamente em desenvolvimento, muitas tarefas ainda são necessárias para difundir e facilitar sua utilização em um número maior de centros de pesquisa, universidades e na iniciativa privada.
 
