@@ -1,0 +1,51 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+
+<div class="row">
+    <h1 style="text-align:center">Run Models</h1>
+</div>
+
+<div class="row">
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Experiment's Name</th>
+                <th>Date(mm/dd/yyyy)</th>
+                <th>Time</th>
+                <th>Central Point City</th>
+                <th>Points per Area</th>
+                <th>Distance(per point)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+             <tr>
+                <td>{{ input_data['EXPNME'] }}</td>
+                <td>{{ input_data['IMONTH'] }}/{{ input_data['IDATE1'] }}/{{ input_data['IYEAR'] }}</td>
+                <td>{{ input_data['ITIME1'] }}</td>
+                <td>{{ input_data['CENTLAT'] }}/{{ input_data['CENTLON'] }}</td>
+                <td>{{ input_data['NNXP'] }}/{{ input_data['NNYP'] }}</td>
+                <td>{{ input_data['DELTAX'] }}/{{ input_data['DELTAY'] }}</td>
+
+                <td>
+                    <form  class="form form-horizontal" action="{{ url_for('runmodels') }}" method="post">
+                        <button class="btn btn-primary" type="submit" class="button" value="run">RUN</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+<div class="row">
+    <h1 style="text-align:center">Result</h1>
+    {{ result }}
+</div>
+
+
+{% endblock %}
