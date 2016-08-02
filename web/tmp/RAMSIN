@@ -1,7 +1,7 @@
 !=======================================================================
   $MODEL_GRIDS
 
-   EXPNME   = 'tes',
+   EXPNME   = 'Guaratingueta',
 
    RUNTYPE  = 'INITIAL',    ! Type of run: MAKESFC, INITIAL, HISTORY,
                             !              MAKEVFILE, or MEMORY
@@ -11,10 +11,10 @@
 
 !  Start of simulation or ISAN processing
 
-   IMONTH1  =8,      ! Month
-   IDATE1   =10,      ! Day
+   IMONTH1  =08,      ! Month
+   IDATE1   =16,      ! Day
    IYEAR1   =2016,    ! Year
-   ITIME1   =0100,    ! GMT of model TIME = 0.
+   ITIME1   =0307,    ! GMT of model TIME = 0.
 
 ! Grid specifications
 
@@ -68,11 +68,11 @@
    NSTRATZ2 = 3,    !
 
 
-   POLELAT  = -22.8322815517,      ! Latitude  of pole point
-   POLELON  = -45.2070410156,      ! Longitude of pole point
+   POLELAT  = -22.85,      ! Latitude  of pole point
+   POLELON  = -45.2345068359,      ! Longitude of pole point
 
-   CENTLAT  = -22.8322815517,      ! Latitude  of grid center
-   CENTLON  = -45.2070410156,      ! Longitude of grid center
+   CENTLAT  = -22.85,      ! Latitude  of grid center
+   CENTLON  = -45.2345068359,      ! Longitude of grid center
 
 			    ! Grid point on the next coarser
                             ! nest where the lower southwest

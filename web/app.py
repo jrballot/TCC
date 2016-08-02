@@ -48,7 +48,16 @@ def confmodels():
 
         new_lines = []
 
-        print form.initdate.data.month
+        if form.initdate.data.month < 10 :
+            month = '0'+ str(form.initdate.data.month)
+
+        else:
+            month =  form.initdate.data.month
+
+        if form.initdate.data.day < 10 :
+            day = '0'+ str(form.initdate.data.day)
+        else:
+            day =  form.initdate.data.day
 
 
         for i in mylist:
@@ -63,8 +72,8 @@ def confmodels():
                 NNYP = form.nnyp.data,
                 CENTLAT = form.centlat.data,
                 CENTLON = form.centlon.data,
-                IMONTH = form.initdate.data.month,
-                IDATE1 = form.initdate.data.day,
+                IMONTH = month,
+                IDATE1 = day,
                 IYEAR = form.initdate.data.year,
                 ITIME1 = str(form.inithour.data)+str(form.initminute.data)))
 
@@ -79,8 +88,8 @@ def confmodels():
                         NNYP = form.nnyp.data,
                         CENTLAT = form.centlat.data,
                         CENTLON = form.centlon.data,
-                        IMONTH = form.initdate.data.month,
-                        IDATE1 = form.initdate.data.day,
+                        IMONTH = month,
+                        IDATE1 = day,
                         IYEAR = form.initdate.data.year,
                         ITIME1 = str(form.inithour.data)+str(form.initminute.data))
 
