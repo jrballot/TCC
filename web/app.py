@@ -48,6 +48,9 @@ def confmodels():
 
         new_lines = []
 
+        print form.initdate.data.month
+
+
         for i in mylist:
             s = MyTemplate(i)
             new_lines.append(s.substitute(
