@@ -115,7 +115,7 @@ def runmodels():
 
     # execute brams
     if request.method == "POST":
-        process = subprocess.Popen(['uname','-a'],
+        process = subprocess.Popen(['python','../brams/bras.py','./tmp/RAMSIN'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
 
