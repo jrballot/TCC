@@ -1,0 +1,21 @@
+{% extends "_baselogin.html" %}
+{% block content %}
+<div class="col-xs-4 col-xs-offset-4 text-center ">
+
+    <div class=""><img src="static/img/logo-brams.overlay.png" alt=""></div>
+
+    <form class="form" action="/" method="POST">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <!-- {{ form.name.label(class="form-control") }} -->
+            {{ form.name(class="form-control", placeholder="Username") }}
+            &nbsp;&nbsp;
+            <!-- {{ form.password.label(class="form-control") }} -->
+            {{ form.password(class="form-control",placeholder="Password") }}
+        </div>
+        <p><button class="btn btn-primary" type="submit" value="Submit">LOGIN</button></p>
+    </form>
+        <span class="label label-info"><a href="/register">REGISTER HERE</a></span>
+</div>
+
+{% endblock %}

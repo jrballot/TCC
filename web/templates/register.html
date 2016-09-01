@@ -1,0 +1,27 @@
+{% extends "_baselogin.html" %}
+{% block content %}
+<div class="col-xs-4 col-xs-offset-4 text-center ">
+    <!-- <div class=""><img src="static/img/logo-brams.overlay.png" alt=""></div> -->
+
+    <form class="form" action="" method="POST">
+        {{ form.csrf_token }}
+        <div class="gorm-group">
+            {{ form.name.label}}: {{ form.name(class="form-control", placeholder="Username") }}
+            &nbsp;&nbsp;
+            {{ form.email.label }}: {{ form.email(class="form-control", placeholder="Email") }}
+        </div>
+
+        <div class="gorm-group">
+            {{ form.password.label}}: {{ form.password(class="form-control", placeholder="Password") }}
+            &nbsp;&nbsp;
+            {{ form.confirm.label }}: {{ form.confirm(class="form-control", placeholder="Repeat Password") }}
+        </div>
+        <br>
+        <div>
+            <button class="btn btn-primary" type="submit" value="Register">REGISTER</button>
+            <br>
+            <span class="label label-info"><a href="/">LOGIN HERE</a></span>
+        </div>
+    </form>
+</div>
+{% endblock %}

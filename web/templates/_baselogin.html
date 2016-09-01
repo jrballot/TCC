@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+      <meta name="viewport" content="initial-scale=1.0">
+      <meta charset="utf-8">
+
+      <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.css')}}">
+      <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css')}}">
+
+     <link rel="stylesheet" href="{{ url_for('static',filename='css/mystyle.css')}}">
+
+     <link rel="stylesheet" href="{{
+     url_for('static', filename='jquery-ui/jquery-ui.min.css')}}">
+
+
+  </head>
+  <body>
+      
+    <div class="container-fluid">
+      <!-- For para exibir as mensagens enviadas pelo Flask.flash -->
+      {% for message in get_flashed_messages() %}
+        <div class="alert alert-success text-center">{{ message }}</div>
+      {% endfor %}
+      {% if error %}
+        <p class="alert alert-danger text-center"> <strong>Error:</strong>
+          {{ error }}
+        </p>
+      {% endif %}
+
+
+      <div class="container">
+          {% block content %}
+          {% endblock %}
+      </div>
+
+    </div>
+
+
+
+
+
+    <script src="{{ url_for('static', filename='js/jquery-1.12.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery-ui/jquery-ui.min.js') }}"></script>
+
+
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Google Maps JS-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_bNE4ZlTypcorTozGsRMpQaikxKX_f5U&callback=initMap"
+    async defer></script>
+
+    <!-- Common Functions -->
+    <script src="{{ url_for('static', filename='js/common_functions.js') }}"></script>
+
+
+</html>

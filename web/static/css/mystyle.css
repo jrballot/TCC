@@ -2,11 +2,12 @@
  width: 100%;
  height: 500px;
  margin-bottom: 15px;
- border: 10px solid #fff;
+ /*border: 10px #fff;
+ border-radius: 25ps;*/
 }
 
 
-.navbar-hover > li:hover {
+/*.navbar-hover > li:hover {
     color: #777;
     background-color: #e7e7e7;
-}
+}*/

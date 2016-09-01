@@ -3,9 +3,11 @@ var rectangle;
 var infoWindow;
 
 // navbar
-$(".nav a").on("click", function(){
-   $(".nav").find(".active").removeClass("active");
-   $(this).parent().addClass("active");
+$(".nav li").click(function(){
+    if ( ! $(this).hasClass('active') ) {
+        $('li.active').removeClass('active');
+        $(this).addClass('active')
+    }
 });
 
 
@@ -43,7 +45,7 @@ function initMap() {
         });
     } else {
     // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
+        handleLocationError(false, infoWindow, map.getCenter());
     }
 
     var center = {
@@ -143,35 +145,48 @@ function showNewCoor(event) {
     infoWindow.setPosition(ne);
 
     infoWindow.open(map)
+
+
+
+
 }
 
 
-/*
-function calcDistance(center, ne) {
-    var R = 6371e3; // metres
-    var Dlat = deg2rad(center.lat - ne.lat());
-    var Dlng = deg2rad(center.lng - ne.lng());
 
-    var aY = Math.sin(Dlat/2) * Math.sin(Dlat/2) +
-                Math.cos(center.lat) * Math.cos(ne.lat()) *
-                Math.sin(0/2) * Math.sin(0/2);
+// function calcDistance(center, ne) {
+//     var R = 6371e3; // metres
+//     var Dlat = deg2rad(center.lat - ne.lat());
+//     var Dlng = deg2rad(center.lng - ne.lng());
+//
+//     var aY = Math.sin(Dlat/2) * Math.sin(Dlat/2) +
+//                 Math.cos(center.lat) * Math.cos(ne.lat()) *
+//                 Math.sin(0/2) * Math.sin(0/2);
+//
+//     var aX = Math.sin(0/2) * Math.sin(0/2) +
+//             Math.cos(center.lat) * Math.cos(center.lat) *
+//             Math.sin(Dlng/2) * Math.sin(Dlng/2);
+//
+//     var cY = 2 * Math.atan2(Math.sqrt(aY), Math.sqrt(1-aY));
+//     var cX = 2 * Math.atan2(Math.sqrt(aX), Math.sqrt(1-aX));
+//
+//     var distY = R * cY;
+//     var distX = R * cX
+//
+//     var dist = { Y: distY, X: distX,};
+//
+//     return dist;
+// }
+//
+// function deg2rad(deg) {
+//     return deg * (Math.PI/180)
+// }
 
-    var aX = Math.sin(0/2) * Math.sin(0/2) +
-            Math.cos(center.lat) * Math.cos(center.lat) *
-            Math.sin(Dlng/2) * Math.sin(Dlng/2);
 
-    var cY = 2 * Math.atan2(Math.sqrt(aY), Math.sqrt(1-aY));
-    var cX = 2 * Math.atan2(Math.sqrt(aX), Math.sqrt(1-aX));
 
-    var distY = R * cY;
-    var distX = R * cX;
-
-    var dist = { Y: distY, X: distX,};
-
-    return dist;
+function updateMapDistanceDeltaX(new_deltax) {
+    console.log(new_deltax)
 }
 
-function deg2rad(deg) {
-    return deg * (Math.PI/180)
+function updateMapDistanceDeltaY(new_deltay) {
+    console.log(new_deltay)
 }
-*/

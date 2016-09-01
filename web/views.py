@@ -1,9 +1,14 @@
-from form import modelFormValidator
 
 
-from flask import Flask, render_template, session, url_for, flash, redirect, request, g
+## IMPORTS
+
+from form import ModelForm, LoginForm, RegisterForm
+
+from flask import Flask, render_template, session, url_for, flash, redirect, request, g, jsonify
+from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from string import Template
+import models
 import subprocess
 
 import os
@@ -17,29 +22,105 @@ class MyTemplate(Template):
 
 app = Flask(__name__)
 app.config.from_object('_config')
-#GoogleMaps(app)
+db = SQLAlchemy(app)
 
-@app.route("/", methods=['GET'])
-def root():
-    return render_template('index.html')
+
+
+## Helper functions
+def login_required(test):
+    @wraps(test)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return test(*args, **kwargs)
+        else:
+            flash('You need to login first.')
+            return redirect(url_for('login'))
+    return wrap
+
+
+## Route page
+@app.route("/", methods=['GET','POST'])
+def login():
+    error = None
+    form = LoginForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user = models.User.query.filter_by(name=request.form['name']).first()
+            if user is not None and user.password == request.form['password']:
+                session['logged_in'] = True
+                session['name'] = user.name
+                flash("Welcome!")
+                return redirect(url_for('confmodels'))
+            else:
+                error = 'Invalid username or password.'
+        else:
+            error = 'Both fields arer requerid.'
+
+    return render_template('login.html', form=form, error=error)
+
+@app.route('/logout')
+def logout():
+    session.pop("logged_in", None)
+    session.pop("name", None)
+
+    flash("You ware logged out")
+    return redirect(url_for('login'))
+
+## Register page
+#
+@app.route('/register/',methods=['GET','POST'])
+def register():
+    error = None
+    form = RegisterForm(request.form)
+    if request.method == 'POST':
+
+        if form.validate_on_submit():
+
+            new_user = models.User(
+                form.name.data,
+                form.email.data,
+                form.password.data,
+            )
+
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Thanks for registering at BAS. Please login.')
+            return redirect(url_for('login'))
+    return render_template('register.html', form=form, error=error)
 
 
 ## About page
 #
 @app.route("/about", methods=['GET'])
+@login_required
 def about():
     return render_template("about.html")
 
 ## Run Models Page
 #
 @app.route("/confmodels", methods=['GET','POST'])
+@login_required
 def confmodels():
     error = None
-    form = modelFormValidator(request.form)
+    form = ModelForm(request.form)
     if request.method == 'POST' and form.validate():
 
+        ## sava conf to database with the user_id
+        new_model = Model(
+            form.expnme.data,
+            form.timmax.data,
+            form.timeunit.data,
+            form.inittime.data,
+            form.deltax.data,
+            datetime.datime.strptime(form.initdate.data,"%d/%m/%y"),
+            form.deltay.data,
+            form.nnxp.data,
+            form.nnyp.data,
+            form.centlat.data,
+            form.centlon.data,
 
-
+            form.initdate.data.year,
+        )
         with open(os.path.join('./','RAMSIN.template'),'r') as f:
             lines = f.readlines()
 
@@ -104,9 +185,10 @@ def confmodels():
                 f.write('\n')
 
     return render_template("confmodels.html", error=error,
-            form=modelFormValidator(request.form))
+            form=ModelForm(request.form), username = session['name'])
 
 @app.route("/runmodels", methods=['GET','POST'])
+@login_required
 def runmodels():
     error = None
     inputdata_dict = None
@@ -136,7 +218,13 @@ def runmodels():
     else:
         error = "File input.data dosen't exist"
 
-    return render_template('runmodels.html', error=error, input_data=inputdata_dict, result=stdout)
+    return render_template('runmodels.html', error=error, input_data=inputdata_dict, result=stdout, username=session['name'])
+
+
+@app.route("/home", methods=['GET'])
+@login_required
+def home():
+    return render_template('home.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

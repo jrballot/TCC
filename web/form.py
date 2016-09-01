@@ -2,12 +2,46 @@
 # Form Validator
 
 from flask_wtf import Form
-from wtforms import StringField, DateField, IntegerField, FloatField, SelectField
-from wtforms.validators import DataRequired
+from wtforms import StringField, DateField, IntegerField, FloatField, SelectField, PasswordField
+from wtforms.validators import DataRequired, Length, EqualTo
 
 
 
-class modelFormValidator(Form):
+class RegisterForm(Form):
+    name = StringField(
+        'Username',
+        validators=[DataRequired(), Length(min=4, max=25)]
+    )
+
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Length(min=6, max=40)]
+    )
+
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=40)]
+    )
+
+    confirm = PasswordField(
+        "Repeat Password",
+        validators=[DataRequired(), EqualTo('password', message='Passwords must match')]
+    )
+
+class LoginForm(Form):
+    name = StringField(
+        'Username',
+        validators=[DataRequired()]
+    )
+
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired()]
+    )
+
+
+
+class ModelForm(Form):
     expnme = StringField('Experiment Name',validators=[DataRequired()])
 
     timmax = IntegerField('Time of Simulation',
@@ -15,7 +49,7 @@ class modelFormValidator(Form):
 
     timeunit = SelectField('Time Unit',
                 validators=[DataRequired()],
-                choices=[('h','hour'),('m','minute'),('s','second')])
+                choices=[('h','hour'),('m','minute'),('s','second'),('d','days')])
 
     deltax = IntegerField("Distance on X ", validators=[DataRequired()])
     deltay = IntegerField("Distance on Y ", validators=[DataRequired()])
@@ -30,7 +64,7 @@ class modelFormValidator(Form):
                 validators=[DataRequired()],
                 format='%m/%d/%Y')
     inithour = SelectField("Initial Hour", validators=[DataRequired()],
-                choices=[('01','01'),
+                choices=[('00','00'),('01','01'),
                         ('02','02'), ('03','03'),
                         ('04','04'), ('05','05'),
                         ('06','06'), ('07','07'),

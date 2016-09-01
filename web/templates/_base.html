@@ -16,7 +16,7 @@
 
   </head>
   <body>
-      {% block header%}
+      {% block header %}
       <div class="navbar navbar-default" role="navigation">
           <div class="container-fluid">
               <div class="navbar-header">
@@ -26,31 +26,39 @@
                       <span class="icon-bar"></span>
 
                   </button>
-                  <a href="" class="navbar-brand" href="#">BAS - BRAMS Automation Suite</a>
+                  <a href="" class="navbar-brand" href="/">BAS - BRAMS Automation Suite</a>
               </div>
 
               <div class="collapse navbar-collapse" id="mynavbar-content">
                   <ul class="nav navbar-nav navbar-hover">
-                      <li class="active">
-                          <a href="/">Home</a>
+                      <li class='active'>
+                          <a href="/home" id="home">Home</a>
                       </li>
                       <li>
-                          <a href="/confmodels">Config Models</a>
+                          <a href="/confmodels" id="confmodels">Config Models</a>
                       </li>
                       <li>
-                          <a href="/runmodels">Run Models</a>
+                          <a href="/runmodels" id="runmodels">Run Models</a>
                       </li>
                       <li>
-                          <a href="/about">About</a>
+                          <a href="/about" id="about">About</a>
                       </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    {% if not session.logged_in %}
+                        <li><a href="{{url_for('users.register')}}">Signup</a></li>
+                    {% else %}
+                        <li><a href="">Welcome, {{ username }}.</a></li>
+                        <li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    {% endif %}
+
                   </ul>
               </div>
 
           </div>
       </div>
       {% endblock %}
-
-    <div class="container">
+    <div class="container-fluid">
       <!-- For para exibir as mensagens enviadas pelo Flask.flash -->
       {% for message in get_flashed_messages() %}
         <div class="alert alert-success text-center">{{ message }}</div>
@@ -62,9 +70,11 @@
       {% endif %}
 
 
+      <div class="container">
+          {% block content %}
+          {% endblock %}
+      </div>
 
-      {% block content %}
-      {% endblock %}
     </div>
 
 
