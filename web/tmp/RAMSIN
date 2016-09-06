@@ -1,7 +1,7 @@
 !=======================================================================
   $MODEL_GRIDS
 
-   EXPNME   = 'Guaratingueta',
+   EXPNME   = 'Aparecida',
 
    RUNTYPE  = 'INITIAL',    ! Type of run: MAKESFC, INITIAL, HISTORY,
                             !              MAKEVFILE, or MEMORY
@@ -11,18 +11,18 @@
 
 !  Start of simulation or ISAN processing
 
-   IMONTH1  =08,      ! Month
-   IDATE1   =16,      ! Day
+   IMONTH1  =09,      ! Month
+   IDATE1   =01,      ! Day
    IYEAR1   =2016,    ! Year
-   ITIME1   =0307,    ! GMT of model TIME = 0.
+   ITIME1   =0600,    ! GMT of model TIME = 0.
 
 ! Grid specifications
 
    NGRIDS   = 1,             ! Number of grids to run
                              ! **version 5.x of BRAMS only admits 1 grid**
 
-   NNXP     = 1, 60, 318, 154, ! Number of x gridpoints
-   NNYP     = 1, 60, 346, 102, ! Number of y gridpoints
+   NNXP     = 60, 60, 318, 154, ! Number of x gridpoints
+   NNYP     = 60, 60, 346, 102, ! Number of y gridpoints
    NNZP     = 35,  38,  38, ! Number of z gridpoints
    NZG      = 7,	     ! Number of soil layers
    NZS      = 1,	     ! Maximum number of snow layers
@@ -34,8 +34,8 @@
    IF_ADAP  = 0,
 
    IHTRAN   = 1,	   ! 0-Cartesian, 1-Polar stereo
-   DELTAX   = 1.,       ! X grid spacing
-   DELTAY   = 1.,       ! Y grid spacing
+   DELTAX   = 30000.,       ! X grid spacing
+   DELTAY   = 30000.,       ! Y grid spacing
 
    DELTAZ   = 100.,         ! Z grid spacing (set to 0. to use ZZ)
    DZRAT    = 1.1,         ! Vertical grid stretch ratio
@@ -68,11 +68,11 @@
    NSTRATZ2 = 3,    !
 
 
-   POLELAT  = -22.85,      ! Latitude  of pole point
-   POLELON  = -45.2345068359,      ! Longitude of pole point
+   POLELAT  = -22.8508672811,      ! Latitude  of pole point
+   POLELON  = -45.2307128906,      ! Longitude of pole point
 
-   CENTLAT  = -22.85,      ! Latitude  of grid center
-   CENTLON  = -45.2345068359,      ! Longitude of grid center
+   CENTLAT  = -22.8508672811,      ! Latitude  of grid center
+   CENTLON  = -45.2307128906,      ! Longitude of grid center
 
 			    ! Grid point on the next coarser
                             ! nest where the lower southwest

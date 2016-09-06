@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+
+<div class="row">
+    <h1 style="text-align:center">Models</h1>
+</div>
+
+<div class="row">
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Experiment's Name</th>
+                <th>Time of Simulation</th>
+                <th>Time Unit</th>
+                <th>Integration Time</th>
+                <th>Initial Date</th>
+                <th>Initial Hour</th>
+                <th>Initial Minute</th>
+                <th>Central Point City (Lat)</th>
+                <th>Central Point City (Lng)</th>
+                <th>Points per Area</th>
+                <th>Distance(per point)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for model in models %}
+             <tr>
+
+                <td>{{ model.exp_name }}</td>
+                <td>{{ model.time_simulation }}</td>
+                <td>{{ model.time_simulation_unit }}</td>
+                <td>{{ model.integration_time }}</td>
+                <td>{{ model.initial_date }}</td>
+                <td>{{ model.initial_hour_hour }}</td>
+                <td>{{ model.initial_hour_minute }}</td>
+                <td>{{ model.center_point_latitude }}</td>
+                <td>{{ model.center_point_longitude }}</td>
+                <td>{{ model.number_points_x_y }}</td>
+                <td>{{ model.distance_x_y }}</td>
+
+                <td>
+
+                        <a href="{{ url_for('run_model', model_id=model.id) }}" class="btn btn-primary"  value="run">RUN</button>
+                        <a href="{{ url_for('delete_model', model_id=model.id) }}" class="btn btn-danger"   value="delete">DELETE</button>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+
+</div>
+
+<div class="row">
+    <h1 style="text-align:center">Result</h1>
+    {{ result }}
+</div>
+
+
+{% endblock %}

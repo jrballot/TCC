@@ -87,19 +87,23 @@
 
                 <div class="form-group col-md-4">
                     <label><strong>Number of Points per Area</strong></label>
-                    {{ form.nnxp(type="number", min="001", max="999", class="form-control",
-                        placeholder="Number of Points in X direction") }}
-                    {{ form.nnyp(type="number", min="001", max="999", class="form-control",
-                        placeholder="Number of Points in Y direction") }}
+                    <br>
+                    {% for subfield in form.nnXYp %}
+                        {{ subfield }}
+                        {{ subfield.label }}
+                    {% endfor %}
+
                 </div>
 
                 <!-- Distance per point (meters, accept only integer values) -->
                 <div class="form-group col-md-4">
                     <label><strong>Distance per Point (m)</strong></label>
-                    {{ form.deltax(id="deltax", type="number", min="0001", max="9999", class="form-control",
-                        placeholder="Distance per Points in X direction", onchange="updateMapDistanceDeltaX(document.getElementById('deltax').value)") }}
-                    {{ form.deltay(id="deltay", type="number", min="0001", max="9999", class="form-control",
-                        placeholder="Distance per Points in Y direction", onchange="updateMapDistanceDeltaY(document.getElementById('deltax').value)") }}
+                    <br>
+                    {% for subfield in form.deltaXY %}
+                        {{ subfield }}
+                        {{ subfield.label }}
+                    {% endfor %}
+                    
                 </div>
 
                 <div class="row">

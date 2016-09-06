@@ -2,7 +2,7 @@
 # Form Validator
 
 from flask_wtf import Form
-from wtforms import StringField, DateField, IntegerField, FloatField, SelectField, PasswordField
+from wtforms import StringField, DateField, IntegerField, FloatField, SelectField, PasswordField, RadioField
 from wtforms.validators import DataRequired, Length, EqualTo
 
 
@@ -51,10 +51,9 @@ class ModelForm(Form):
                 validators=[DataRequired()],
                 choices=[('h','hour'),('m','minute'),('s','second'),('d','days')])
 
-    deltax = IntegerField("Distance on X ", validators=[DataRequired()])
-    deltay = IntegerField("Distance on Y ", validators=[DataRequired()])
-    nnxp = IntegerField("Points per Area in X", validators=[DataRequired()])
-    nnyp = IntegerField("Points per Area in Y", validators=[DataRequired()])
+    deltaXY = RadioField('Distance in X and Y', choices=[('30000','30000 metters')])
+    nnXYp = RadioField('Pointes per Area in X and Y', choices=[('60','60 points')])
+
     centlat = FloatField("Center Latitude", validators=[DataRequired()])
     centlon = FloatField("Center Longitude", validators=[DataRequired()])
 

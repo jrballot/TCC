@@ -1,28 +1,28 @@
 !=======================================================================
   $MODEL_GRIDS
 
-   EXPNME   = '@EXPNME',
+   EXPNME   = 'Aparecida',
 
-   RUNTYPE  = '@RUNTYPE',    ! Type of run: MAKESFC, INITIAL, HISTORY,
+   RUNTYPE  = 'INITIAL',    ! Type of run: MAKESFC, INITIAL, HISTORY,
                             !              MAKEVFILE, or MEMORY
-   TIMEUNIT = '@TIMEUNIT',          ! 'h','m','s' - Time units of TIMMAX, TIMSTR, VTIME
+   TIMEUNIT = 'h',          ! 'h','m','s' - Time units of TIMMAX, TIMSTR, VTIME
 
-   TIMMAX   = @TIMMAX.,          ! Final time of simulation
+   TIMMAX   = 1.,          ! Final time of simulation
 
 !  Start of simulation or ISAN processing
 
-   IMONTH1  =@IMONTH,      ! Month
-   IDATE1   =@IDATE1,      ! Day
-   IYEAR1   =@IYEAR,    ! Year
-   ITIME1   =@ITIME1,    ! GMT of model TIME = 0.
+   IMONTH1  =09,      ! Month
+   IDATE1   =01,      ! Day
+   IYEAR1   =2016,    ! Year
+   ITIME1   =0510,    ! GMT of model TIME = 0.
 
 ! Grid specifications
 
    NGRIDS   = 1,             ! Number of grids to run
                              ! **version 5.x of BRAMS only admits 1 grid**
 
-   NNXP     = @NNXP, 60, 318, 154, ! Number of x gridpoints
-   NNYP     = @NNYP, 60, 346, 102, ! Number of y gridpoints
+   NNXP     = 60, 60, 318, 154, ! Number of x gridpoints
+   NNYP     = 60, 60, 346, 102, ! Number of y gridpoints
    NNZP     = 35,  38,  38, ! Number of z gridpoints
    NZG      = 7,	     ! Number of soil layers
    NZS      = 1,	     ! Maximum number of snow layers
@@ -34,8 +34,8 @@
    IF_ADAP  = 0,
 
    IHTRAN   = 1,	   ! 0-Cartesian, 1-Polar stereo
-   DELTAX   = @DELTAX.,       ! X grid spacing
-   DELTAY   = @DELTAY.,       ! Y grid spacing
+   DELTAX   = 30000.,       ! X grid spacing
+   DELTAY   = 30000.,       ! Y grid spacing
 
    DELTAZ   = 100.,         ! Z grid spacing (set to 0. to use ZZ)
    DZRAT    = 1.1,         ! Vertical grid stretch ratio
@@ -68,11 +68,11 @@
    NSTRATZ2 = 3,    !
 
 
-   POLELAT  = @CENTLAT,      ! Latitude  of pole point
-   POLELON  = @CENTLON,      ! Longitude of pole point
+   POLELAT  = -22.857194701,      ! Latitude  of pole point
+   POLELON  = -45.219039917,      ! Longitude of pole point
 
-   CENTLAT  = @CENTLAT,      ! Latitude  of grid center
-   CENTLON  = @CENTLON,      ! Longitude of grid center
+   CENTLAT  = -22.857194701,      ! Latitude  of grid center
+   CENTLON  = -45.219039917,      ! Longitude of grid center
 
 			    ! Grid point on the next coarser
                             ! nest where the lower southwest
