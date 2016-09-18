@@ -1,3 +1,0 @@
-## BRAMS config environment
-
-bramsX

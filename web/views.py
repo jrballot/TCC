@@ -1,5 +1,3 @@
-
-
 ## IMPORTS
 
 from form import ModelForm, LoginForm, RegisterForm
@@ -51,7 +49,7 @@ def login():
                 session['name'] = user.name
                 session['user_id'] = user.id
                 flash("Welcome!")
-                return redirect(url_for('confmodels'))
+                return redirect(url_for('home'))
             else:
                 error = 'Invalid username or password.'
         else:
@@ -127,69 +125,6 @@ def confmodels():
         db.session.commit()
         return redirect(url_for('allmodels'))
 
-        # with open(os.path.join('./','RAMSIN.template'),'r') as f:
-        #     lines = f.readlines()
-        #
-        #
-        # mylist = map(lambda each:each.strip('\n'), lines)
-        #
-        # new_lines = []
-        #
-        # if form.initdate.data.month < 10 :
-        #     month = '0'+ str(form.initdate.data.month)
-        #
-        # else:
-        #     month =  form.initdate.data.month
-        #
-        # if form.initdate.data.day < 10 :
-        #     day = '0'+ str(form.initdate.data.day)
-        # else:
-        #     day =  form.initdate.data.day
-        #
-        #
-        # for i in mylist:
-        #     s = MyTemplate(i)
-        #     new_lines.append(s.substitute(
-        #         EXPNME = form.expnme.data,
-        #         TIMMAX = form.timmax.data,
-        #         TIMEUNIT = form.timeunit.data,
-        #         DELTAX = form.deltax.data,
-        #         DELTAY = form.deltay.data,
-        #         NNXP = form.nnxp.data,
-        #         NNYP = form.nnyp.data,
-        #         CENTLAT = form.centlat.data,
-        #         CENTLON = form.centlon.data,
-        #         IMONTH = month,
-        #         IDATE1 = day,
-        #         IYEAR = form.initdate.data.year,
-        #         ITIME1 = str(form.inithour.data)+str(form.initminute.data)))
-        #
-        #
-        # formitems = dict(
-        #                 EXPNME = form.expnme.data,
-        #                 TIMMAX = form.timmax.data,
-        #                 TIMEUNIT = form.timeunit.data,
-        #                 DELTAX = form.deltax.data,
-        #                 DELTAY = form.deltay.data,
-        #                 NNXP = form.nnxp.data,
-        #                 NNYP = form.nnyp.data,
-        #                 CENTLAT = form.centlat.data,
-        #                 CENTLON = form.centlon.data,
-        #                 IMONTH = month,
-        #                 IDATE1 = day,
-        #                 IYEAR = form.initdate.data.year,
-        #                 ITIME1 = str(form.inithour.data)+str(form.initminute.data))
-        #
-        # with open(os.path.join('./tmp','input.data'),'w') as f:
-        #     for key, value in formitems.items():
-        #         f.write(key + " = " + str(value) + "\n")
-        #
-        #
-        # with open(os.path.join('./tmp','RAMSIN'),'w') as f:
-        #     for line in new_lines:
-        #         f.write(line)
-        #         f.write('\n')
-
     return render_template("confmodels.html", error=error,
             form=ModelForm(request.form), username = session['name'])
 
@@ -257,23 +192,42 @@ def configure_ramsin(model):
                 )
             )
 
-        with open(os.path.join('./tmp','RAMSIN_'+runtype),'w') as f:
+        with open(os.path.join(os.path.abspath('./tmp'),'RAMSIN_'+runtype),'w') as f:
             for line in new_lines:
                 f.write(line)
                 f.write('\n')
 
-        ## Clear new_liens for nex runtype
+        ## Clear new_lines for nex runtype
         del new_lines[:]
+
 
 ## Run a model configuration
 #
 @app.route("/run_model/<int:model_id>")
 @login_required
 def run_model(model_id):
+    error=None
     model = db.session.query(models.Model).filter_by(id=model_id).first()
     configure_ramsin(model)
-    flash('Executing model id {}. It may take awhile.'.format(model_id))
+
+    try:
+        ## run brams.py pass data model
+        flash('Executing model id {}. It may take awhile.'.format(model_id))
+
+        ## using subprocess to rund brams.py
+        subprocess.call([os.path.abspath('./brams/bras.py'),
+                        '--date', str(model.initial_date).replace('-',''),
+                        '--time', '0' + str(model.initial_hour_hour)])
+
+    except Exception as exception:
+        error="Somenting goes wrong: " + str(exception)
+
+        print error
+        print str(model.initial_date).replace('-','')
+        print '0' + str(model.initial_hour_hour)
+
     return redirect(url_for('allmodels'))
+
 
 ## Delete a model configuration
 #
@@ -299,33 +253,6 @@ def allmodels():
     if request.method == "POST":
         pass
 
-    # models = getModels(session['user_id'])
-    #
-    # print models
-
-    # # execute brams
-    # if request.method == "POST":
-    #     process = subprocess.Popen(['python','../brams/bras.py','./tmp/RAMSIN'],
-    #         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    #     stdout, stderr = process.communicate()
-    #
-    # # read last configuration
-    # if os.path.isfile(os.path.join('./tmp', 'input.data')):
-    #
-    #     with open(os.path.join('./tmp', 'input.data'), 'r') as f:
-    #         idxdata = f.readlines()
-    #
-    #     idxdata = map(lambda each: each.strip('\n'), idxdata)
-    #
-    #     inputdata_dict = {}
-    #     for item in idxdata:
-    #         tmp_dict = dict(x.split('=') for x in item.split(','))
-    #         for k, v in tmp_dict.items():
-    #             inputdata_dict[k.strip()] = v.strip()
-    #
-    # else:
-    #     error = "File input.data dosen't exist"
-
     return render_template('allmodels.html', error=error, models=getModels(session['user_id']), result=stdout, username=session['name'])
 
 
@@ -333,6 +260,7 @@ def allmodels():
 @login_required
 def home():
     return render_template('home.html', username=session['name'])
+
 
 if __name__ == "__main__":
     app.run(debug=True)

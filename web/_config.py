@@ -1,8 +1,8 @@
 
 import os
 
-
 basedir = os.path.abspath(os.path.dirname(__file__))
+tmpdir = os.path.abspath('./tmp')
 
 DATABASE="bas_database.db"
 CSRF_ENABLE=True
