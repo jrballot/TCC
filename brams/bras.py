@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import re
 import argparse
 import os
 from ftplib import FTP
@@ -8,21 +8,31 @@ from ftplib import FTP
 # necessario pegar o primeiro horario do dia seguinte
 
 def downloadFiles(data):
+
+    pattern = "GAMRAMS"+data+data[:-2]+"\d\dP.(icn|fct).TQ0126L028.(ctl|gmp|grb)"
+
+    print pattern
+    regex1 = re.compile(pattern)
+
     try:
         ftp = FTP("ftp1.cptec.inpe.br")
         ftp.login()
         ftp.cwd('/modelos/io/tempo/global/T126L28/'+data)
         print "List of files: \n"
-        ftpList = ftp.dir()
+        ftpFiles = ftp.nlst()
+        for ftpFile in ftpFiles:
+            if re.search(regex, ftpFile):
+                print "Found match: {} downloading...".format(ftpFile)
+                ftp.retrbinary('RETR %s' % ftpFile, open(os.path.join("./tmp",ftpFile), "wb").write )
     except Exception as e:
-        print "Something goes wrong {}".format(e)
+        print "Something goes wrong: {}".format(e)
 
 
 def grib2dp():
     """
         grib2dp - Will try to covert the global input format from INPE to a DP format needed by BRAMS
     """
-
+    
     pass
 
 def copyDP():

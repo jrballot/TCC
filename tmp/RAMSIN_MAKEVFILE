@@ -5,16 +5,16 @@
 
    RUNTYPE  = 'MAKEVFILE',    ! Type of run: MAKESFC, INITIAL, HISTORY,
                             !              MAKEVFILE, or MEMORY
-   TIMEUNIT = 'm',          ! 'h','m','s' - Time units of TIMMAX, TIMSTR, VTIME
+   TIMEUNIT = 'h',          ! 'h','m','s' - Time units of TIMMAX, TIMSTR, VTIME
 
-   TIMMAX   = 20.,          ! Final time of simulation
+   TIMMAX   = 1.,          ! Final time of simulation
 
 !  Start of simulation or ISAN processing
 
    IMONTH1  =09,      ! Month
-   IDATE1   =15,      ! Day
+   IDATE1   =12,      ! Day
    IYEAR1   =2016,    ! Year
-   ITIME1   =0820,    ! GMT of model TIME = 0.
+   ITIME1   =1000,    ! GMT of model TIME = 0.
 
 ! Grid specifications
 
@@ -68,11 +68,11 @@
    NSTRATZ2 = 3,    !
 
 
-   POLELAT  = -22.8429662,      ! Latitude  of pole point
-   POLELON  = -45.2290526,      ! Longitude of pole point
+   POLELAT  = -22.8418,      ! Latitude  of pole point
+   POLELON  = -45.2287,      ! Longitude of pole point
 
-   CENTLAT  = -22.8429662,      ! Latitude  of grid center
-   CENTLON  = -45.2290526,      ! Longitude of grid center
+   CENTLAT  = -22.8418,      ! Latitude  of grid center
+   CENTLON  = -45.2287,      ! Longitude of grid center
 
 			    ! Grid point on the next coarser
                             ! nest where the lower southwest

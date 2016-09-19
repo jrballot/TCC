@@ -210,14 +210,24 @@ def run_model(model_id):
     model = db.session.query(models.Model).filter_by(id=model_id).first()
     configure_ramsin(model)
 
+    initial_date = str(model.initial_date).replace('-','')
+
+    if model.initial_hour_hour >= 10:
+        initial_hour_hour = str(model.initial_hour_hour)
+    else:
+        initial_hour_hour = '0' + str(model.initial_hour_hour)
+
     try:
         ## run brams.py pass data model
         flash('Executing model id {}. It may take awhile.'.format(model_id))
 
+
+
+
         ## using subprocess to rund brams.py
         subprocess.call([os.path.abspath('./brams/bras.py'),
-                        '--date', str(model.initial_date).replace('-',''),
-                        '--time', '0' + str(model.initial_hour_hour)])
+                        '--date', initial_date,
+                        '--time', initial_hour_hour])
 
     except Exception as exception:
         error="Somenting goes wrong: " + str(exception)
