@@ -12,9 +12,9 @@
 !  Start of simulation or ISAN processing
 
    IMONTH1  =09,      ! Month
-   IDATE1   =12,      ! Day
+   IDATE1   =20,      ! Day
    IYEAR1   =2016,    ! Year
-   ITIME1   =1000,    ! GMT of model TIME = 0.
+   ITIME1   =1500,    ! GMT of model TIME = 0.
 
 ! Grid specifications
 

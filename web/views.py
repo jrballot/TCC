@@ -221,9 +221,6 @@ def run_model(model_id):
         ## run brams.py pass data model
         flash('Executing model id {}. It may take awhile.'.format(model_id))
 
-
-
-
         ## using subprocess to rund brams.py
         subprocess.call([os.path.abspath('./brams/bras.py'),
                         '--date', initial_date,

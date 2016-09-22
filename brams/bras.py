@@ -2,28 +2,61 @@
 import re
 import argparse
 import os
+import shutil
+import subprocess
 from ftplib import FTP
 
 # file format:  GAMRAMS+data+data[00,06,12,18].(icn|fct).TQ0126L028.(ctl|gmp|grb)
 # necessario pegar o primeiro horario do dia seguinte
+_pathTMP = os.path.join(os.path.abspath("."),"tmp/regional")
+_pathREGIONAL = os.path.join(os.path.abspath("."),"tmp/regional")
+_grib2dp = os.path.join(os.path.abspath("."),"grib2dp")
 
-def downloadFiles(data):
 
-    pattern = "GAMRAMS"+data+data[:-2]+"\d\dP.(icn|fct).TQ0126L028.(ctl|gmp|grb)"
+def preRun():
 
-    print pattern
-    regex1 = re.compile(pattern)
+    """
+        Validade prerequisits to run the model
+    """
+
+
+    if not os.path.exists(_pathTMP):
+        os.makedirs(_pathTMP)
+
+    if not os.path.exists(_pathREGIONAL):
+        os.makedirs(_pathREGIONAL)
+    else:
+        #clean content
+        pass
+
+
+
+
+
+
+def downloadFiles(fulltime,nextday):
+
+
+    pattern1 = "GAMRAMS"+fulltime+fulltime[:-2]+"\d\dP.(icn|fct).TQ0126L028.(ctl|gmp|grb)"
+    pattern2 = "GAMRAMS"+fulltime+nextday+"\d\dP.(icn|fct).TQ0126L028.(ctl|gmp|grb)"
+
+    #print pattern
+    regex1 = re.compile(pattern1)
+    regex2 = re.compile(pattern2)
 
     try:
         ftp = FTP("ftp1.cptec.inpe.br")
         ftp.login()
-        ftp.cwd('/modelos/io/tempo/global/T126L28/'+data)
+        ftp.cwd('/modelos/io/tempo/global/T126L28/'+fulltime)
         print "List of files: \n"
         ftpFiles = ftp.nlst()
         for ftpFile in ftpFiles:
-            if re.search(regex, ftpFile):
+
+            # try something to not re-download all the files
+
+            if re.search(regex1, ftpFile) or re.search(regex2, ftpFile):
                 print "Found match: {} downloading...".format(ftpFile)
-                ftp.retrbinary('RETR %s' % ftpFile, open(os.path.join("./tmp",ftpFile), "wb").write )
+                ftp.retrbinary('RETR %s' % ftpFile, open(os.path.join(_pathREGIONAL,ftpFile), "wb").write )
     except Exception as e:
         print "Something goes wrong: {}".format(e)
 
@@ -32,8 +65,16 @@ def grib2dp():
     """
         grib2dp - Will try to covert the global input format from INPE to a DP format needed by BRAMS
     """
-    
-    pass
+
+    shutil.copy(_grib2dp+"/grbconv.x",_pathREGIONAL+"/grbconv.x")
+    shutil.copy(_grib2dp+"/grib2dp.x",_pathREGIONAL+"/grib2dp.x")
+    shutil.copy(_grib2dp+"/PREP_IN",_pathREGIONAL+"/PREP_IN")
+
+    try:
+        print "Running grib2dp.x ..."
+        subprocess.call([_pathREGIONAL+"/grib2dp.x"])
+    except Exception as e:
+        print "Something goes wrong: {}".format(e)
 
 def copyDP():
     "copyDP - Copy DP files to your proper destination inside BRAMS's hierarchy directories"
@@ -66,7 +107,11 @@ def main(date,time):
         time = '12'
 
     fullData = date+time
-    downloadFiles(fullData)
+    nextday = date[:-2] + str(int(date[-2:])+1)
+
+    preRun()
+    downloadFiles(fullData,nextday)
+    grib2dp()
 
 
 if __name__ == "__main__":
