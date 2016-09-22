@@ -7,6 +7,10 @@ from ftplib import FTP
 # file format:  GAMRAMS+data+data[00,06,12,18].(icn|fct).TQ0126L028.(ctl|gmp|grb)
 # necessario pegar o primeiro horario do dia seguinte
 
+def validateEnv():
+    pass
+
+
 def downloadFiles(data):
 
     pattern = "GAMRAMS"+data+data[:-2]+"\d\dP.(icn|fct).TQ0126L028.(ctl|gmp|grb)"
@@ -32,7 +36,7 @@ def grib2dp():
     """
         grib2dp - Will try to covert the global input format from INPE to a DP format needed by BRAMS
     """
-    
+
     pass
 
 def copyDP():
