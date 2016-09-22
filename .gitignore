@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+./env
+./idea
+./tmp
+
+*.pyc
+*.gmp
+*.ctl
+*.grb
+dp*
+=======
 env/
 *.pyc
 tmp/
+>>>>>>> 3cf48f5e17b5a46d312f2041c7f8abc0d7277471
