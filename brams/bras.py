@@ -12,7 +12,6 @@ _pathTMP = os.path.join(os.path.abspath("."),"tmp/regional")
 _pathREGIONAL = os.path.join(os.path.abspath("."),"tmp/regional")
 _grib2dp = os.path.join(os.path.abspath("."),"grib2dp")
 
-
 def preRun():
 
     """
@@ -50,8 +49,13 @@ def downloadFiles(fulltime,nextday):
             # try something to not re-download all the files
 
             if re.search(regex1, ftpFile) or re.search(regex2, ftpFile):
-                print "Found match: {} downloading...".format(ftpFile)
-                ftp.retrbinary('RETR %s' % ftpFile, open(os.path.join(_pathREGIONAL,ftpFile), "wb").write )
+                print "Found match: {}".format(ftpFile)
+                if not os.path.exists(os.path.join(_pathREGIONAL,ftpFile)):
+                    ftp.retrbinary('RETR %s' % ftpFile, open(os.path.join(_pathREGIONAL,ftpFile), "wb").write )
+                else:
+                    print "File {} already exist".format(ftpFile)
+
+
     except Exception as e:
         print "Something goes wrong: {}".format(e)
 
@@ -67,7 +71,7 @@ def grib2dp():
 
     try:
         print "Running grib2dp.x ..."
-        subprocess.call(["cd",_pathREGIONAL])
+        os.chdir(_pathREGIONAL)
         subprocess.call([_pathREGIONAL+"/grib2dp.x"])
     except Exception as e:
         print "Something goes wrong: {}".format(e)
