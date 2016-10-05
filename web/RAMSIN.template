@@ -21,8 +21,8 @@
    NGRIDS   = 1,             ! Number of grids to run
                              ! **version 5.x of BRAMS only admits 1 grid**
 
-   NNXP     = @NNXP, 60, 318, 154, ! Number of x gridpoints
-   NNYP     = @NNYP, 60, 346, 102, ! Number of y gridpoints
+   NNXP     = @NNXP, 318, 154, ! Number of x gridpoints
+   NNYP     = @NNYP, 346, 102, ! Number of y gridpoints
    NNZP     = 35,  38,  38, ! Number of z gridpoints
    NZG      = 7,	     ! Number of soil layers
    NZS      = 1,	     ! Maximum number of snow layers
@@ -202,7 +202,7 @@
 ! History/analysis file output
 
    IPOS     =  2,                ! 0-no files, 2-grads files, 1-hdf5(not available yet)
-   IOUTPUT  =  1,                ! 0-no files, 1-hdf5 files, 2-vfm files, 3-mpiio files, 4-binary(not available yet)
+   IOUTPUT  =  2,                ! 0-no files, 1-hdf5 files, 2-vfm files, 3-mpiio files, 4-binary(not available yet)
    HFILOUT  = './dataout/HIS/MO',       ! History file prefix
    AFILOUT  = './dataout/ANL/meteo-only',       ! Analysis file prefix
    ICLOBBER = 1,                 ! 0=stop if files exist, 1=overwite files

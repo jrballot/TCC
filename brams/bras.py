@@ -8,9 +8,11 @@ from ftplib import FTP
 
 # file format:  GAMRAMS+data+data[00,06,12,18].(icn|fct).TQ0126L028.(ctl|gmp|grb)
 # necessario pegar o primeiro horario do dia seguinte
-_pathTMP = os.path.join(os.path.abspath("."),"tmp/regional")
+_pathTMP = os.path.join(os.path.abspath("."),"tmp")
 _pathREGIONAL = os.path.join(os.path.abspath("."),"tmp/regional")
 _grib2dp = os.path.join(os.path.abspath("."),"grib2dp")
+_meteo_only = "/home/jota/meteo-only"
+_meteo_only_datain = os.path.join(_meteo_only,"datain/dp-meteo-only")
 
 def preRun():
 
@@ -24,7 +26,11 @@ def preRun():
     if not os.path.exists(_pathREGIONAL):
         os.makedirs(_pathREGIONAL)
     else:
-        #clean content
+        print "Clear {}".format(_pathREGIONAL)
+        print "|--> List of files: {}".format(os.listdir(_pathREGIONAL))
+        for f in os.listdir(_pathREGIONAL):
+            print " |--> removing {} file".format(f)
+            os.remove(os.path.join(_pathREGIONAL, f))
         pass
 
 
@@ -78,9 +84,26 @@ def grib2dp():
 
 def copyDP():
     "copyDP - Copy DP files to your proper destination inside BRAMS's hierarchy directories"
-    pass
+    
 
-def runModel(runtype):
+    patternDP = "dp\d\d\d\d\-\d\d-\d\d-\d\d\d\d"
+    regexDP = re.compile(patternDP)
+
+    if os.path.exists(_meteo_only_datain):
+      
+        try:
+            print "Copying DP files"    
+            for f in os.listdir(_pathREGIONAL):
+                if re.search(regexDP, f):
+                    shutil.copy(os.path.join(_pathREGIONAL, f), _meteo_only_datain)
+                    print " |--> copying {} to {}".format(f, _meteo_only_datain)
+        except Exception as e:
+            print "Something goes wrong: {}".format(e)
+
+    else:
+        print "No found any DP file"
+
+def runModel():
     """
         runModel - Run BRAMS with a especified RUNTYPE passed by runtype variable.
         Runtype can be one of those:
@@ -88,7 +111,19 @@ def runModel(runtype):
             MAKESFC
             MAKEVFILE
     """
-    pass
+
+    runStages = ['RAMSIN_MAKESFC',"RAMSIN_MAKEVFILE", "RAMSIN_INITIAL"]
+    
+    commandRunModel = 'mpirun -np 1 ../bin/brams-5.2'
+
+    for runStage in runStages:
+        try:
+            shutil.copy(os.path.join(_pathTMP, runStage), _meteo_only)
+            os.chdir(_meteo_only)
+            subprocess.call(['mpirun','-np','1','/home/jota/bin/brams-5.2','-f',runStage])
+        except Exception as e:
+            print "Something goes wrong: {}".format(e)
+
 
 def getOutputInPNG():
     """
@@ -101,18 +136,22 @@ def main(date,time):
         main - it's control the main flow
     """
 
-    if time[:1] < 12:
+    if int(time) < 12:
         time = '00'
     else:
         time = '12'
 
     fullData = date+time
     nextday = date[:-2] + str(int(date[-2:])+1)
+    print "Fulldata: {}".format(fullData)
+    print "Next day: {}".format(nextday)
 
     preRun()
+    print
     downloadFiles(fullData,nextday)
     grib2dp()
-
+    copyDP()
+    runModel()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="BRAS - BRAMS Automation Suit")
@@ -122,5 +161,6 @@ if __name__ == "__main__":
     result = parser.parse_args()
 
     print "Initial date: {}\nInitial time: {}".format(result.initdate, result.inittime)
-
+    
+    preRun()
     main(result.initdate, result.inittime)

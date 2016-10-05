@@ -110,7 +110,7 @@ def confmodels():
             form.expnme.data,
             form.timmax.data,
             form.timeunit.data,
-            form.inttime.data,
+            #form.inttime.data,
             form.initdate.data,
             form.inithour.data,
             form.initminute.data,
@@ -120,11 +120,11 @@ def confmodels():
             form.deltaXY.data,
             session['user_id']
         )
-
+        
         db.session.add(new_model)
         db.session.commit()
         return redirect(url_for('allmodels'))
-
+    
     return render_template("confmodels.html", error=error,
             form=ModelForm(request.form), username = session['name'])
 
@@ -188,7 +188,8 @@ def configure_ramsin(model):
                     IMONTH = month,
                     IDATE1 = day,
                     IYEAR = model.initial_date.year,
-                    ITIME1 = str(hour)+str(minute)
+                    ITIME1 = '0000'
+                    #ITIME1 = str(hour)+str(minute)
                 )
             )
 

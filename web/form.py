@@ -44,8 +44,8 @@ class LoginForm(Form):
 class ModelForm(Form):
     expnme = StringField('Experiment Name',validators=[DataRequired()])
 
-    timmax = IntegerField('Time of Simulation',
-                validators=[DataRequired()])
+    timmax = SelectField('Time of Simulation',
+                validators=[DataRequired()], choices=[('06','06'),('12','12'),('18','18'),('24','24')])
 
     timeunit = SelectField('Time Unit',
                 validators=[DataRequired()],
@@ -57,7 +57,7 @@ class ModelForm(Form):
     centlat = FloatField("Center Latitude", validators=[DataRequired()])
     centlon = FloatField("Center Longitude", validators=[DataRequired()])
 
-    inttime = IntegerField("Integration Time", validators=[DataRequired()])
+    #inttime = IntegerField("Integration Time", validators=[DataRequired()])
     initdate = DateField(
                 "Initial Date (mm/dd/yyyy)",
                 validators=[DataRequired()],

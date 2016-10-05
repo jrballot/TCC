@@ -30,7 +30,7 @@ class Model(db.Model):
    exp_name = db.Column(db.String, nullable=False)
    time_simulation = db.Column(db.Integer, nullable=False)
    time_simulation_unit = db.Column(db.String, nullable=False)
-   integration_time = db.Column(db.Integer, nullable=False)
+   #integration_time = db.Column(db.Integer, nullable=False)
    initial_date = db.Column(db.Date, default=datetime.utcnow())
    initial_hour_hour = db.Column(db.Integer, nullable=False)
    initial_hour_minute = db.Column(db.Integer, nullable=False)
@@ -42,12 +42,12 @@ class Model(db.Model):
 
 
 
-   def __init__(self, exp_name, time_simulation, time_simulation_unit, integration_time, initial_date,
+   def __init__(self, exp_name, time_simulation, time_simulation_unit, initial_date,
                initial_hour_hour, initial_hour_minute, center_point_latitude, center_point_longitude, number_points_x_y, distance_x_y, user_id):
        self.exp_name = exp_name
        self.time_simulation = time_simulation
        self.time_simulation_unit = time_simulation_unit
-       self.integration_time = integration_time
+       #self.integration_time = integration_time
        self.initial_date = initial_date
        self.initial_hour_hour = initial_hour_hour
        self.initial_hour_minute = initial_hour_minute
