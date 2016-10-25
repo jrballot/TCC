@@ -13,6 +13,7 @@ _pathREGIONAL = os.path.join(os.path.abspath("."),"tmp/regional")
 _grib2dp = os.path.join(os.path.abspath("."),"grib2dp")
 _meteo_only = "/home/jota/meteo-only"
 _meteo_only_datain = os.path.join(_meteo_only,"datain/dp-meteo-only")
+_pathIMG = os.path.join(os.path.abspath('.'),"output_img")
 
 def preRun():
 
@@ -32,6 +33,9 @@ def preRun():
             print " |--> removing {} file".format(f)
             os.remove(os.path.join(_pathREGIONAL, f))
         pass
+
+    if not os.path.exists(_pathIMG):
+        os.makedirs(_pathIMG)
 
 
 def downloadFiles(fulltime,nextday):
@@ -137,21 +141,21 @@ def main(date,time):
     """
 
     if int(time) < 12:
-        time = '00'
+        fullData = date+'00'
     else:
-        time = '12'
+        fullData = date+'12'
 
-    fullData = date+time
     nextday = date[:-2] + str(int(date[-2:])+1)
     print "Fulldata: {}".format(fullData)
     print "Next day: {}".format(nextday)
 
     preRun()
-    print
     downloadFiles(fullData,nextday)
     grib2dp()
     copyDP()
     runModel()
+
+    getOutputInPNG(time)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="BRAS - BRAMS Automation Suit")
