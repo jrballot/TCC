@@ -8,7 +8,7 @@ from functools import wraps
 from string import Template
 from datetime import datetime
 import subprocess
-
+import shutil
 import os
 
 # change Template delimiter
@@ -223,9 +223,10 @@ def run_model(model_id):
         flash('Executing model id {}. It may take awhile.'.format(model_id))
 
         ## using subprocess to rund brams.py
-        subprocess.call([os.path.abspath('./brams/bras.py'),
+        subprocess.call([os.path.abspath('./brams/bas.py'),
                         '--date', initial_date,
-                        '--time', initial_hour_hour])
+                        '--time', initial_hour_hour,
+                        '--modelid', str(model_id)])
 
     except Exception as exception:
         error="Somenting goes wrong: " + str(exception)
@@ -249,19 +250,42 @@ def delete_model(model_id):
     return redirect(url_for('allmodels'))
     pass
 
+## Delete model result
+#
+@app.route('/delete_model_result/<int:model_id>')
+@login_required
+def delete_model_result(model_id):
+    outputImgs = os.path.abspath('./web/static/img/output_img')
+    outputImgs_model_id = os.path.join(outputImgs,str(model_id))
+    
+    if os.path.exists(outputImgs_model_id):
+        shutil.rmtree(outputImgs_model_id)
+    flash("Result from Model id {} was deleted.".format(model_id))
+    return redirect(url_for('allmodels'))
 
 @app.route("/allmodels", methods=['GET','POST'])
 @login_required
 def allmodels():
     error = None
     inputdata_dict = None
-    stdout = None
-    stderr = None
+    results = {}
+    imgs = []
+    models = getModels(session['user_id'])
+    outputImgs = os.path.abspath('./web/static/img/output_img')
+    
+    if os.path.exists(outputImgs):
+        model_ids = os.listdir(outputImgs)
+        if len(model_ids) != 0:
+            for model_id in model_ids:
+                imgPath = os.path.join(outputImgs,model_id)
+                if len(os.listdir(imgPath)) != 0:
+                    imgs.append(os.listdir(imgPath)[0])
+                    imgs.append(os.listdir(imgPath)[1])
+                    results[model_id] = imgs
+                    imgs = []
+                    print results
 
-    if request.method == "POST":
-        pass
-
-    return render_template('allmodels.html', error=error, models=getModels(session['user_id']), result=stdout, username=session['name'])
+    return render_template('allmodels.html', error=error, models=models, result=results, username=session['name'])
 
 
 @app.route("/home", methods=['GET'])
