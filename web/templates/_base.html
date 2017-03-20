@@ -31,18 +31,18 @@
 
               <div class="collapse navbar-collapse" id="mynavbar-content">
                   <ul class="nav navbar-nav navbar-hover">
-                      <li class='active'>
+                      <li {% if request.path == '/home' %}class='active' {% endif %}>
                           <a href="/home" id="home">Home</a>
                       </li>
-                      <li>
+                      <li {% if request.path == '/confmodels' %}class='active' {% endif %}>
                           <a href="/confmodels" id="confmodels">Config Models</a>
                       </li>
-                      <li>
+                      <li {% if request.path == '/allmodels' %}class='active' {% endif %}>
                           <a href="/allmodels" id="allmodels">Models</a>
                       </li>
-                      <li>
+                      <!-- <li>
                           <a href="/about" id="about">About</a>
-                      </li>
+                      </li> -->
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                     {% if not session.logged_in %}

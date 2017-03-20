@@ -59,7 +59,7 @@
 </div>
 
 <div class="row">
-    <h1 style="text-align:center">Result</h1>
+    <h1 style="text-align:center">Results</h1>
     <table class="table table-condensed">
         <thead>
             <tr>
@@ -70,10 +70,10 @@
         {% for key in result.keys() %}
             <tr>
                 {% set imgs = result[key] %}
-            
+
                 <td><div class="col-md-6"><img src="static/img/output_img/{{ key }}/{{ imgs[0] }}" width=200%></div></td>
                 <td><div class="col-md-6"><img src="static/img/output_img/{{ key }}/{{ imgs[1] }}" width=200%></div></td>
-                
+
             </tr>
         {% endfor %}
         </tbody>
